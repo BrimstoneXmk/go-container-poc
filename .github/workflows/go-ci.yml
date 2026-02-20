@@ -34,13 +34,11 @@ jobs:
       
       - name: Build & push image using ACR Tasks
         run: |
-          az acr build \
-            --registry ${{ secrets.ACR_NAME }} \
-            --image go-container-poc:latest \
-            --file Dockerfile \
-            --pull \
-            --push \
-            .
+            az acr build \
+              --registry ${{ secrets.ACR_NAME }} \
+              --image go-container-poc:latest \
+              --file Dockerfile \
+              .
         
 
         
