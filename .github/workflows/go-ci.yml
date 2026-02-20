@@ -25,9 +25,10 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Build Docker image
         run: |
-          docker buildx build \
-          -t ${{ secrets.ACR_LOGIN_SERVER }}/go-container-poc:latest \
-          --push .
+          docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/go-container-poc:latest .
+      - name:
+        run: |
+          docker push ${{ secrets.ACR_LOGIN_SERVER }}/go-container-poc:latest
         
 
         
