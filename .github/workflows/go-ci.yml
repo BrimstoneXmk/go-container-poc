@@ -21,14 +21,23 @@ jobs:
       - name: Go test
         run: go test ./...
         
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Build Docker image
+      - name: Install Azure CLI
         run: |
-          docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/go-container-poc:latest .
-      - name:
+          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
+      - name: Login to ACR (Admin user)
         run: |
-          docker push ${{ secrets.ACR_LOGIN_SERVER }}/go-container-poc:latest
+          az acr login \
+            --name ${{ secrets.ACR_NAME }} \
+            --username ${{ secrets.ACR_USERNAME }} \
+            --password ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build image inside ACR (ACR Tasks)
+        run: |
+          az acr build \
+            --registry ${{ secrets.ACR_NAME }} \
+            --image go-container-poc:latest \
+            .
         
 
         
