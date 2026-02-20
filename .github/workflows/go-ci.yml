@@ -32,13 +32,16 @@ jobs:
             --username ${{ secrets.ACR_USERNAME }} \
             --password ${{ secrets.ACR_PASSWORD }}
       
-      - name: Build & push image using ACR Tasks
+      - name: Build Docker image
         run: |
-            az acr build \
-              --registry ${{ secrets.ACR_NAME }} \
-              --image go-container-poc:latest \
-              --file Dockerfile \
-              .
+          docker build \
+            -t ${{ secrets.ACR_NAME }}.azurecr.io/go-container-poc:latest \
+            -f Dockerfile \
+            .
+      
+      - name: Push Docker image to ACR
+        run: |
+          docker push ${{ secrets.ACR_NAME }}.azurecr.io/go-container-poc:latest
         
 
         
